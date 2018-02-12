@@ -1,0 +1,37 @@
+## Base a trabajar: AirPassengers
+install.packages("forecast")
+require(forecast)
+View(AirPassengers)
+help(AirPassengers)
+AirPassengers
+class(AirPassengers)  ##Tipo de datos de Air Passengers
+start(AirPassengers)  ##Cuando inicia la serie
+print(AirPassengers)
+length(AirPassengers)
+head(AirPassengers, n=8)  ##Primeros 8 datos
+tail(AirPassengers, n=8)  ##Ultimos 8 datos
+plot(AirPassengers, xlab ="Años" , ylab="No. de pasajeros", type = "s") ##type: tipo de gráfica
+ 
+
+##EJERCICIO
+## De la pagina del inegi bajar la tasa de informalidad laboral en valores relativos
+# a nivel nacional, todos los trimestres del 2005 al 2017, importar a R, declarar serie de tiempo 
+# con el inicio, fin y frecuencia de la ST. Una vez que hayan declarado la serie, usar la funcion
+#print,length,head, tail (10 datos) y explicarlas
+#graficar la serie de tiempo con 3 tipos de graficas diferentes y 3 colores, ademasinvestigar y usar las 
+#funciones time, deltal, cycle, fequency y explicar para qué sirven
+
+ejercicio <- read.csv("file:///C:/Users/USUARIO/Documents/Ejerciciohoy.csv")
+ejerts <- ts(ejercicio, frequency = 4, start = (2005), end = (2017))
+print(ejerts) ##Muestra la serie de tiempo con sus datos
+length(ejerts) ##Muestra la cantidad de datos en ella
+head(ejerts, n=10) ##Muestra los primeros 10 datos
+tail(ejerts, n=10) ##Muestras los ultimos 10 datos
+plot(ejerts, xlab="año" , ylab="Informalidad laboral", type="c", col=(20))
+plot(ejerts, xlab="año" , ylab="Informalidad laboral", type="l", col=(55))
+plot(ejerts, xlab="año" , ylab="Informalidad laboral", type="p", col=(10))
+
+time(ejerts, offset(0)) ##crea un vector de tiempo 
+cycle(ejerts, offset(0)) ##da las posiciones en el ciclo de cada observación.
+frequency(ejerts, offset(0)) ##devuelve el número de muestras por unidad de tiempo
+deltat(ejerts, offset(0)) ##el intervalo de tiempo entre las observaciones
