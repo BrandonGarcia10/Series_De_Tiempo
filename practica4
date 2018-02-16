@@ -1,0 +1,62 @@
+aa <- AirPassengers
+plot(aa)
+plot(aggregate(aa)) ##aggregate muestra la tendencia de la serie de tiempo
+boxplot(aa~cycle (aa))##Gráfica de cajas por periodo de la ST
+deso <- read.csv("file:///C:/Users/USUARIO/Documents/tasadesocupacion.csv")
+desots <- ts(deso, frequency = 4 , start = 2005)## Para poner que empiece en 2005
+## y en el tercer trimestre se pone start = c(2005,3)
+deseanual <- aggregate(desots)/4 ## Tasa anual de desocupación
+x11()  ##Abre una ventana por si no caben las gráficas
+layout(1:2)
+plot(desots)
+plot(deseanual)
+
+deso1 <- window(desots , start = c(2008,2) , end = c(2015,4))
+## tasa informalidad laboral, tasa de ocupacion parcial, tasa de asalariados
+ejercicio <- read.csv("file:///C:/Users/USUARIO/Documents/ejercicio.csv")
+parcialts <- ts(ejercicio[,1], frequency = 4, start = 2005)
+asalariadots <- ts(ejercicio[,2], frequency = 4, start = 2005)
+til1ts <- ts(ejercicio[,3], frequency = 4, start = 2005)
+parcialts
+asalariadots
+til1ts
+multiple <- ts.intersect(parcialts, asalariadots,til1ts)
+multiple
+plot(multiple)
+
+###########EJERCICIO
+##OBTENER 4 SERIES DE TIEMPO CON 30 DATOS COMO MINIMO
+## con sustento para compararlas
+##con la base:
+##1) importarlas, declararlas como ST separadas, graficarlas
+##crear una multiple y graficarla comoST núltiple
+##despues dividir 2 series en 3 periodos de intervalos iguales
+##Por ultimo aplicar aggregate para conocer su tendencia y hacer la grafica de cajas 
+##e interpretar los periodos de las series
+
+ejercicio2 <- read.csv("file:///C:/Users/USUARIO/Documents/ejercicio2.csv")
+ocuts <- ts(ejercicio2[,1], frequency = 4, start = 2005)
+desocuts <- ts(ejercicio2[,2], frequency = 4, start = 2005)
+dispots <- ts(ejercicio[,3], frequency = 4, start = 2005)
+nodispots <- ts(ejercicio2[,4], frequency = 4, start = 2005)
+
+multiple2 <- ts.intersect(ocuts, desocuts, dispots, nodispots)
+plot(multiple2)
+
+inter <- window(desocuts , start = c(2007,4) , end = c(2009,4))
+inter2 <- window(dispots , start = c(2007,4) , end = c(2009,4))
+x11()
+layout(1:2)
+plot(inter)
+plot(inter2)
+
+##Durante el periodo de finales de 2007 a finales de 2009, la tasa de desocupacion se 
+##elevó de gran manera gracias a la crisis de 2008, ocasionando asi, que la tasa de disponibilidad
+##aumentara con ella, y despues disminuyendo puesto que los encuestados necesitaban trabajo urgentemente
+##y podían iniciar lo más pronto posible
+x11()
+layout(1:2)
+plot(aggregate(desocuts))
+x11()
+layout(1:1)
+boxplot(desocuts~cycle(desocuts))
