@@ -1,0 +1,23 @@
+install.packages("forecast")
+require(forecast)
+##PROMEDIOS MOVILES: método clásico para descomponer las series de tiempo, para aminorar el impacto de los picos
+crimi <- c(12632,13607,12160,13335,14553,14654,12791,11923,10225,9847)
+tscrimi <- ts(crimi , start = 1980)
+crimi
+ma(tscrimi, order=4)
+x11()
+layout(1:3)
+
+plot(tscrimi, main = "Crimen de méxico con orden 5", ylab="Millones de Personas", xlab="años")
+lines(ma(tscrimi,5), col="red")
+
+ma(tscrimi, order = 3)
+plot(tscrimi, main = "Crimen de méxico con orden 3", ylab="Millones de Personas", xlab="años")
+lines(ma(tscrimi,3), col="red")
+
+ma(tscrimi, order = 4)
+plot(tscrimi, main = "Crimen de méxico con orden 4", ylab="Millones de Personas", xlab="años")
+lines(ma(tscrimi,4), col="red")
+
+##Si la grafica no tiene muchos cambios, usarorden mas grande
+##Si la grafica tiene muchos cambios, usar orden mas pequeño
