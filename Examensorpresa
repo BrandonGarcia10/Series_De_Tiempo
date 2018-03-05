@@ -1,0 +1,60 @@
+#DESARROLLA UN SCRIPT EN R
+
+##HACER ESTOS DATOS COMO DATA FRAME
+#1) GENERA 5 SERIES DE TIEMPO CON NOMBRE MÚLTIPLE1
+#LOS RANGOS DE ESTAS SERIES SON SERIE 1) DE 15 A 35,
+#2) DE 100 A 200, 3) DE 29 A 49 Y 4) DE 42 A 162
+#LAS SERIES DEBEN TENER 250 DATOS MENSUALES COMENZANDO EN EL TERCER MES DE 1990
+#HACER ESTOS DATOS CON DATA FRAME
+#GENERAR CADA UNA DE LAS COLUMNAS EN SERIES DE TIEMPO
+#1.1) DE LA SERIE DE TIEMPO 1, HACER 2 SERIES DE TIEMPO Y DIVIDIRLAS CON r
+#EN DOS SERIES QUE VAYAN DE 1990 A 2003 Y DE 1998 A 2006 Y DESPUES GRAFIQUENLAS
+#1.2) DIVIDIR LAS SERIES 3 Y 4 A TRAVES DE CORCHETES DESDE LA OBSERVACION 150 A LA 250
+#1.3) DE 2 SERIES (LAS QUE QIUIERAN) OBTENER Y GENERAR 2 DATA FRAME DE LA TENDENCIA Y LA ESTACIONALIDAD.
+
+install.packages("fpp")
+install.packages("forecast")
+require(fpp)
+require(forecast)
+
+multiple1 <- sample(15:25 , 250, replace = T)
+multiple2 <- sample(100:200 , 250, replace = T)
+multiple3 <- sample(29:49 , 250, replace = T)
+multiple4 <- sample(42:162 , 250, replace = T)
+
+base1 <- data.frame(multiple1,multiple2, multiple3, multiple4)
+View(base1)
+
+
+multiple1ts <- ts(multiple1, frequency = 12, start = c(1990,3))
+multiple2ts <- ts(multiple2, frequency = 12, start = c(1990,3))
+multiple3ts <- ts(multiple3, frequency = 12, start = c(1990,3))
+multiple4ts <- ts(multiple4, frequency = 12, start = c(1990,3))
+
+
+multi1desc <- decompose(multiple1ts)
+multi1desc
+
+#1.1
+descomposicion <- window(multiple1ts , start = (1990) , end = (2003))
+plot(descomposicion, col=2, main= "Descomposición 1", sub="Fuente: Creación propia")
+descomposicion2 <- window(multiple1ts , start = (1998) , end = (2006))
+plot(descomposicion2, col=3, main= "Descomposición 2", sub="Fuente: Creación propia")
+
+#1.2: con corchet
+multiple3ts
+descomposicion3 <- ts(multiple3ts[150:250], frequency= 12, start= 1990)
+descomposicion4 <- ts(multiple4ts[150:250], frequency= 12, start= 1990)
+
+
+#1.3:
+names(multiple1)
+descomposicion5 <-stl(multiple1ts, s.window = 12)
+descomposicion6 <- stl(multiple2ts, s.window = 12)
+base2 <- data.frame(descomposicion5$time.series[,2], descomposicion5$time.series[,3])
+base3 <- data.frame(descomposicion6$time.series[,2], descomposicion5$time.series[,3])
+
+
+
+
+
