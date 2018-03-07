@@ -1,0 +1,85 @@
+##PRONOSTICOS
+#2 TIPOS DE PRONOSTICOS: CUALITATIVOS Y CUANTITATIVOS
+#SE VERÁN LOS CUANTITATIVOS. PARA USARSE SE DEBE CUMPLIR 2 CONDICIONES:
+#1) INFORMACION NUMERICA SOBRE EL PASADO DISPONIBLE
+#2) RAZONABLE SUPONER QUE ALGUNOS ASPECTOS DE LOS PATRONES DEL PASADO CONTINUARÁN EN EL FUTURO
+#PRONOSTICO: predecir el futuro con la mayor presicion posible, teniendo en cuenta toda la informacion disponible
+#incluídos los datos históricos y el conocimiento de cualquier evento futuro que pueda afectar a las previsiones.
+#OBJETIVOS: deben estar vinculados a las previsiones y planes, pero esto no siempre ocurre. Con demasiada frecuencia
+#las metas se fijan sin ningun plan para alcanzarlas, y las previsiones no son realistas.
+#PLANES: Los planes son respuestas a las previsiones y los objetivos. La planificacion implica determinar 
+#las acciones apropiadas que se requieren para hacer que sus predicciones coincidan con sus objetivos.
+##corto plazo:
+#
+#
+#
+#En las primeras etapas de un proyecto de predicción, las decisiones tienen que ser tomadas sobre lo que debe ser pronoticado.
+#Por ejemplo, si se requieren previsiones para los elementos de un producto comercial es necesario preguntarse si se necesitan
+#pronósticos.
+#Los datos de series de tiempo son utiles cuando se esta pronosticando algo que esta cambiando con el tiempo, por ejemplo:
+#precios diarios de acciones, tasas laborales, resultados trimestrales de las ventas de una empresa, ganancias anuales, etc.
+#5 pasos básicos para hacer pronosticos:
+#1) DEFINICIÓN DEL PROBLEMA: parte más dificil, requiere comprension de la forma en que usarán los pronosticos.
+#2) DATOS A UTILIZAR: siempre hay al menos dos tipos de informacion requerida: a)datos estadísticos y
+# b)la experiencia acumulada de las personas que recolectan los datos y utilizar los pronósticos. A menudo, será dificil obtener
+#suficientes datos históricos para ser capaz de encajar un buen modelo estadístico.
+#3) ANALISIS PREELIMINAR: primero se observa la representación gráfica de los datos. ¿Existen patrones consistentes?, 
+# ¿hay una tendencia significativa?. ¿hay estacionalidad?, ¿hay evidencia de la presencia de los ciclos económicos?,
+#¿Hay algunas anomalías en los datos que necesita ser explicado por aquellos con un conocimiento experto?
+#4) ELEGIR Y AJUSTAR MODELOS: el mejor modelo a utilizar depende de la disponibilidad de datos historicos, la fuerza 
+#de la relación entre la variable de pronostico y las variables explicativas, y la forma en que las previsiones se utilizarán. 
+#Cada modelo es en si una construccion artificial que se basa en un conjunto de supuestos(explicitos e implicitos).
+#5) USO Y EVALUACIÓN DE UN MODELO: una vez que el modelo ha sido seleccionado y sus parámetros estimados, el modelo se uiliza
+#para hacer pronosticos. El rendimiento del modelo solo puede ser evaluado correctamente despues de que se obtienen los datos del
+#periodo pronosticado.
+
+
+##############################MODELOS LINEALES PARA PRONOSTICAR###########################################################
+
+# Son la aplicación de pronosticos lineales como los metodos de la media, el ingenuo, el ingenuo estacional y el de deriva el 
+# pronóstico.
+
+
+##############################INGENUO"###############################
+#Está basado en la ultima observacion nque arroja la serie de tiempo. Es decir este pronostico asume que la observacion más
+#importante es la última.
+# FUNCION EN R: naive(serie, h=num pronosticos)
+
+
+####################################MÉTODO DE LA MEDIA#####################
+#Este método le da el mismo peso a todos los datos u observaciones.
+#se asume con este método que todas las observaciones tienen la misma importancia por loq ue el pronosticoes un
+#promedio de todas las observaciones
+#  FUNCIÓN EN R:  meanf(serie, h=numero de pronosticos)
+
+
+###################################INGENUO ESTACIONAL#####################################
+#Este metodo s eusa con una st de alta estacionalidad. Este proceso coonsiste en darle el mayor peso o la mayor ponderacion al dato
+#del mismo periodo en el año anterior, por ejemplo: trimestre 2 del año 2005 es igual al trimestre 2 del 2006
+#  FUNCION EN R:  naive(serie, h=numero de pronosticos)
+
+
+##################################MÉTODO DE LA DERIVA#######################################
+#Este método consiste en el que pronóstico puede incrementar o reducirse sobre el tiempo dependiendo del promedio de los
+#cambios históricos de la ST.
+#   FUNCION EN R:  rwf(serie, h=num de pronosticos, drift=TRUE)
+
+##########################EJERCICIO DEL PIB
+des0 <- read.csv("file:///C:/Users/USUARIO/Documents/desocupacion.csv")
+dests <- ts(des0, start = 2005, frequency = 4)
+install.packages("fpp")
+require(fpp)
+desocmod1 <- meanf(dests, h=10)
+desocmod2 <- naive(dests, h=10)
+desocmod3 <- snaive(dests, h=10)
+desocmod4 <- rwf(dests, h=10, drift = TRUE)
+
+X11()
+plot(desocmod1, main="TASA DE DESOCUPACIÓN TRIMESTRAL", col="green")
+lines(desocmod1$mean , col="green")
+lines(desocmod2$mean , col="black")
+lines(desocmod3$mean , col="gray")
+lines(desocmod4$mean , col="orange")
+x11()
+legend("topleft", lty = 1, col=c("green","black", "gray", "orange"), legend=c("media","ingenuo","ingenuo estacional","deriva"))
+
