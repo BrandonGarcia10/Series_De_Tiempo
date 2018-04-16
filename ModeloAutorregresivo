@@ -1,0 +1,60 @@
+##Serie estacionaria: varianza y media constante (más facil de pronosticar)
+##Estacional: solo tiene un componente estacional (se ve en la gráfica que coincide en un solo componente)
+
+##Para convertir una serie estacionaria hay varios métodos
+#Pasos: obtener la serie, hacer le analisis grafico y despues aplicar algun metodo para convertirla
+##ARIMA: Autorregresivo y medias manuales
+
+##############################MODELO AURORREGRESIVO###########################
+#Es un modelo de regresion multiple ne el que se pronóstica la variable de interes, utilizando una combinacion
+#lineal de predictores.
+#En un modelo AR se pronostica la variable de interes usando una combinacion lineal de valores anteriores. El
+#término autorregresivo indica que es una regresion de la misma variable
+#Un modelo AR de orden P se define:
+#**FORMULA**
+#
+#Para estos modelos C es constante y et es ruido blanco
+#Los modelos AR son muy flexibles y pueden ser utilizados en ST con diversos patrones.
+#En los modelos AR de orden 1:
+##**FORMULA**
+##Se cumple lo siguiente:
+#Si fi1=0 , el modelo es de ruido blanco
+#Si fi1=1 y C=0, Yt es un modelo de caminata aleatoria
+#Si fi1=1 y C es diferente de 0, es un modelo de caminata aleatoria con deriva
+#Si fi1<0, Yt oscila entre valores positivos y negativos.
+
+##ARIMA(p:orden , d:diferenciaciones a la serie , q:orden de promedios moviles)
+
+
+#####################MODELOS DE PROMEDIOS MÓVILES#############################
+#Los modelos de la medias móviles se plantean de la sig. forma
+##**FORMULA*
+
+#En estos modelos cada valor de Yt puede ser pensado como un promedio movil poderado de los errores de los pronosticos.
+#Es importante no confundir el suavizado de prom. moviles con los modelos de promedios moviles
+#Modelo de MA: pronotica
+#Suavizado de MA: estima tendencias y ciclos
+#
+#
+###################MOEDLOS ARIMA NO ESTACIONALES
+##En estos modelos se combina la diferenciacion con modelos autorregresivo (AR) y medias moviles (MA) y
+#medias móviles (MA) los modelos ARIMA es un acronimo de Autoregresive Integrated Moving Average. El modelo
+#ARIMA se plantea de la sig. forma:
+###########FORMULA
+##Los modelos ARIMA contienen los siguientes elementos
+#p= orden parte autoregresiva, d= grados de diferenciacion, q= orden de parte de los promedios moviles
+#Para los modelos ARIMA se utilizan las condiciones de estacionariedad de los modelos AR y MA
+#Una vez que se plantean los modelos se procede a elegir los valores de p,d,q
+#A grandes rasgos los modelos ARIMA se pueden expresar de la siguuiente forma:
+##### ARIMA(0,0,0)....Modelo de ruido blanco (su pronostico no depende de datos anteriores)
+##### ARIMA(0,1,0)....Modelo con caminata aleatoria
+##### ARIMA(p,0,0)....Modelo autorregresivo
+##### ARIMA(0,0,q)....Modelo de medias moviles
+
+deso <- read.csv("file:///C:/Users/USUARIO/Documents/desoc.csv")
+desots <- ts(deso, start = 2005, frequency = 4)
+require(fpp)
+mod1 <- auto.arima(desots, seasonal = F) #se pone seasonal = F, porque no es una serie estacional
+mod1
+plot(forecast(mod1, h=10))
+###drift : deriva
