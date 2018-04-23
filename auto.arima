@@ -1,0 +1,26 @@
+##La funcion auto.arima es muy util para algunas series de tiempo,sin embargo tiene limites que se deben considerar
+##sobre todo se debe conocer el comportmiento de la st para elegir el modelo adecuado. un elemento que tiene un impacto importante
+##en los pronosticos a largo plazo es la constante C y lo podemos observar en las siguientes limitaciones:
+# 1.- si C=0 y d=0   el pronostico a largo plazo tiene tendencia a cero
+# 2.- si C=0 y d=1   el pronostico a largo plazo será una constante diferente de cero
+# 3.- si C=0 y d=2   el pronostico a largo plazo serán en linea recta
+# 4.- si C es diferente a 0 y d=0   el pronostico a largo plazo serán la media de la st
+# 5.- si C es dif a 0 y d=1   los pronosticos a largo plazo serán una inea recta
+# 6.- si C es dif a 0 y d=2   los pronosticos serán una tendencia cuadrática
+install.packages("fpp")
+require(fpp)
+pib
+pib <- read.csv("file:///C:/Users/USUARIO/Documents/pib.csv")
+pibts <- ts(pib, frequency = 1, start = 1961)
+mod1 <- auto.arima(pibts, seasonal = F)
+mod1
+
+apple <- read.csv("file:///C:/Users/USUARIO/Documents/apple.csv")
+applets <- ts(apple, frequency= 251,)
+mod2 <- auto.arima(applets, seasonal = F)
+mod2
+
+deso <- read.csv("file:///C:/Users/USUARIO/Documents/desocupacion.csv")
+desots <- ts(deso, frequency= 4, start= 2005)
+mod3 <- auto.arima(desots, seasonal = F)
+mod3
