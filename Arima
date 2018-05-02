@@ -1,0 +1,67 @@
+bimbo <- read.csv("file:///C:/Users/Sala-H20/Pictures/BIMBOA.MX.csv")[,5]
+bimbots <- ts(bimbo, frequency = 251, start = 2017)
+orangets <- ts(Orange, frequency = 1, start = 0)
+require(fpp)
+###VAMOS A REVISAR SI LA SERIE ES ESTACIONARIA
+###ESTO LO HACEMOS CON EL adf.test
+adf.test(bimbots)
+##EN ESTAPRUEBA ESPERAMOS UN p-value de 0.05
+##en este caso tenemos un p-value de 0.09 por lo que hay que aplicar una diferenciacion
+##para convertir la serie a estacionaria
+dbimbots <- diff(bimbots)
+adf.test(dbimbots)
+##YA QUE ES ESTACIONARIA ES POSIBLE APLICAR UN MODELO ARIMA POR LO QUE PROCEDEMOS A SELECCIONAR LOS VALORES DE p,d y q
+##para seleccionar q usamos la funcion de autocorrelacion (acf)
+##para p usamos autocorrelacion parcial(pacf)
+x11()
+acf(dbimbots)
+##Una vez que aplicamos el acf vamos a observar la gráfica y ver cuantas líneas sobrepasan el margen
+##y el numero de lineas sobre el valor de q
+x11()
+pacf(dbimbots)
+mod1bim <- Arima(bimbots, order = c(0,1,0))
+mod1bim
+mod2bim <- Arima(bimbots, order = c(1,1,2))
+mod2bim
+mod3bim <- Arima(bimbots, order = c(3,1,2))
+mod3bim
+mod4bim <- Arima(bimbots, order = c(2,1,2))
+mod4bim
+mod4 <- forecast(mod4bim, h=12)
+x11()
+plot(forecast(mod4bim, h = 12), include = 45)
+##Usamos el menor valor de aic
+require(fpp)
+###############ELEGIR 2 SERIES DE TIEMPO DIFERENTES A LAS QUE HEMOS VISTO EN CLASE Y REPETIR ELPROCEDIMIENTO
+#### PARA ELEGIR UN MODELO ARIMA "MEJOR" SEGUN LOS CRITERIOS AICC Y COMPARARLOS CON EL MODELO AUTO.ARIMA
+
+library(help=datasets)
+AirPassengers
+airts <- ts(AirPassengers, frequency =12, start = 1949 )
+dairts <- diff(airts)
+adf.test(dairts)
+
+
+adf.test(dairts)
+x11()
+acf(dairts)
+x11()
+pacf(dairts)
+modeloair <- Arima(airts, order = c(9,1,11))
+modeloair
+mod2 <- auto.arima(airts)
+mod2
+
+Orange
+orangets <- ts(Orange, frequency = 1, start = 0)[,3]
+adf.test(orangets)
+x11()
+acf(orangets)
+x11()
+pacf(orangets)
+modelo <- Arima(orangets, order = c(4,0,6))
+modelo
+modeloaa <- auto.arima(orangets)
+modeloaa
+
+##############SIEMPRE NOS QUEDAMOS CON EL MODELO AUTO.ARIMA
